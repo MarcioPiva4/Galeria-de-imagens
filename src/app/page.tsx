@@ -1,4 +1,3 @@
-// page.tsx
 'use client';
 
 import { useEffect, useState } from "react";
@@ -6,6 +5,7 @@ import Modal from "@/components/Modal";
 import ImageDetail from "@/components/ImageDetail";
 import { listAllImagesFromFirebase } from "@/lib/listAllImagesFromFirebase";
 import { uploadImageToFirebase } from "@/lib/uploadImage";
+import Image from "next/image";
 
 export default function Home() {
   const [modal, setModal] = useState<boolean>(false);
@@ -15,6 +15,9 @@ export default function Home() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [imageUrls, setImageUrls] = useState<{ url: string; description: string }[]>([]);
   const [selectedImage, setSelectedImage] = useState<{ url: string; description: string } | null>(null);
+  
+  const [selectedOverlay, setSelectedOverlay] = useState<string>('');
+  const [selectedEffect, setSelectedEffect] = useState<string>('');
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -27,7 +30,7 @@ export default function Home() {
     };
 
     fetchImages();
-  }, [uploadProgress]);
+  }, []); // Removido uploadProgress, o fetch só precisa ser chamado uma vez na montagem
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -42,19 +45,28 @@ export default function Home() {
   };
 
   const handleUpload = async () => {
-    if (selectedFile) {
+    if (selectedFile && previewImage) {
       try {
         setErrorMessage(null);
-        const url = await uploadImageToFirebase(selectedFile, setUploadProgress);
-        setImageUrls([...imageUrls, { url, description: "" }]); // Add new image URL
-        setModal(false);
-        setPreviewImage(null);
-        setSelectedFile(null);
-        setUploadProgress(0);
+  
+        // Envia a imagem para o Firebase com overlay e efeito
+        const url = await uploadImageToFirebase(selectedFile, selectedOverlay, selectedEffect, setUploadProgress);
+  
+        setImageUrls([...imageUrls, { url, description: "" }]); // Adiciona a nova URL da imagem
+        resetModalState(); // Reseta os estados do modal
       } catch (error) {
         setErrorMessage("Erro ao enviar a imagem. Por favor, tente novamente.");
       }
     }
+  };
+  
+  const resetModalState = () => {
+    setModal(false);
+    setPreviewImage(null);
+    setSelectedFile(null);
+    setUploadProgress(0);
+    setSelectedOverlay(''); // Reseta overlay
+    setSelectedEffect(''); // Reseta efeito
   };
 
   return (
@@ -68,9 +80,11 @@ export default function Home() {
               className="relative group cursor-pointer"
               onClick={() => setSelectedImage(image)}
             >
-              <img
+              <Image
                 src={image.url}
                 alt={`Exposição ${index}`}
+                width={300}
+                height={300}
                 className="object-cover w-64 h-40 rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform group-hover:scale-105"
               />
               <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -80,12 +94,11 @@ export default function Home() {
           ))
         ) : (
           <div className="text-white text-center w-full">
-            Nenhuma imagem disponível
-          </div>
+          {imageUrls.length === 0 ? "Carregando imagens..." : "Nenhuma imagem disponível"}
+        </div>
         )}
       </div>
 
-      {/* Botão de envio */}
       <div className="flex justify-center mt-8">
         <button
           onClick={() => setModal(true)}
@@ -95,7 +108,6 @@ export default function Home() {
         </button>
       </div>
 
-      {/* Modal para upload */}
       {modal && (
         <Modal
           isOpen={modal}
@@ -105,10 +117,13 @@ export default function Home() {
           handleUpload={handleUpload}
           uploadProgress={uploadProgress}
           errorMessage={errorMessage}
+          selectedOverlay={selectedOverlay}
+          setSelectedOverlay={setSelectedOverlay}
+          selectedEffect={selectedEffect}
+          setSelectedEffect={setSelectedEffect}
         />
       )}
 
-      {/* Modal para detalhes da imagem */}
       {selectedImage && (
         <ImageDetail
           image={selectedImage}
@@ -118,3 +133,6 @@ export default function Home() {
     </div>
   );
 }
+
+// No arquivo /src/lib/listAllImagesFromFirebase.ts
+// Certifique-se de que a função listAllImagesFromFirebase esteja exportada corretamente e possa ser chamada diretamente.
