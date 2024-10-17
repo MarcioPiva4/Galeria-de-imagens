@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   previewImage: string | null;
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleUpload: () => void; // Atualiza a assinatura da função
+  handleUpload: () => void;
   uploadProgress: number;
   errorMessage: string | null;
-  selectedOverlay: string; // Adiciona a prop para o overlay selecionado
-  setSelectedOverlay: (overlay: string) => void; // Função para atualizar o overlay
-  selectedEffect: string; // Adiciona a prop para o efeito selecionado
-  setSelectedEffect: (effect: string) => void; // Função para atualizar o efeito
+  selectedOverlay: string;
+  setSelectedOverlay: (overlay: string) => void;
+  selectedEffect: string;
+  setSelectedEffect: (effect: string) => void;
 }
 
 const overlays = [
   { name: 'Nenhum', url: '' },
   { name: 'Emoji Corações', url: 'https://firebasestorage.googleapis.com/v0/b/livros-15d40.appspot.com/o/filtros%2Fpngtree-lovers-emoticons-background-png-image_2859444-removebg-preview.png?alt=media&token=4282d319-cbe2-4639-85e9-0b24dfd3b9f1' },
   { name: 'Emoji Feliz', url: 'https://firebasestorage.googleapis.com/v0/b/livros-15d40.appspot.com/o/filtros%2Fworld-smile-day-emojis-removebg-preview.png?alt=media&token=00f63d4f-dfec-4c35-aaee-c155151ecc5f' },
-  { name: 'Beleza', url: 'https://firebasestorage.googleapis.com/v0/b/livros-15d40.appspot.com/o/filtros%2Fpng-transparent-emoji-doing-thumbs-up-illustration-emoji-emoticon-smiley-like-button-thumb-signal-double-happiness-computer-icons-text-messaging-smile-thumbnail-removebg-preview.png?alt=media&token=0ae406c7-5a7b-472d-ad8c-4a4900d189a5' }
+  { name: 'Beleza', url: 'https://firebasestorage.googleapis.com/v0/b/livros-15d40.appspot.com/o/images%2Fpng-transparent-emoji-doing-thumbs-up-illustration-emoji-emoticon-smiley-like-button-thumb-signal-double-happiness-computer-icons-text-messaging-smile-thumbnail-removebg-preview.png?alt=media&token=5fe5be5c-f0a5-455e-8e82-2ae96f64e65a' }
 ];
 
 const effects = [
@@ -55,7 +55,6 @@ const Modal: React.FC<ModalProps> = ({
         </button>
         
         <div className="flex flex-col items-center mb-4">
-          {/* Container para imagem com overlay e efeitos */}
           {previewImage && (
             <div className={`relative w-full h-40 mb-4 ${selectedEffect}`}>
               <img
@@ -132,9 +131,9 @@ const Modal: React.FC<ModalProps> = ({
             </div>
           </div>
         )}
-
+        
         {errorMessage && (
-          <div className="text-red-500 text-sm text-center mt-2">
+          <div className="mt-4 text-red-500 text-sm">
             {errorMessage}
           </div>
         )}

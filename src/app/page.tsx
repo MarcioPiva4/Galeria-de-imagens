@@ -133,6 +133,3 @@ export default function Home() {
     </div>
   );
 }
-
-// No arquivo /src/lib/listAllImagesFromFirebase.ts
-// Certifique-se de que a função listAllImagesFromFirebase esteja exportada corretamente e possa ser chamada diretamente.
