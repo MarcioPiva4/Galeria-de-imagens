@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Modal from "@/components/Modal";
 import ImageDetail from "@/components/ImageDetail";
-import { listenToImageUpdates } from "@/lib/listAllImagesFromFirestore"; // Altere para a nova função
+import { listenToImageUpdates } from "@/lib/listAllImagesFromFirebase"; // Altere para a nova função
 import { uploadImageToFirebase } from "@/lib/uploadImage";
 import Image from "next/image";
 
