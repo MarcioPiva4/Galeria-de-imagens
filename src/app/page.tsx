@@ -70,7 +70,7 @@ export default function Home() {
   };
 
   return (
-    <div className="h-full w-full bg-indigo-950 p-6">
+    <div className="w-full bg-indigo-950 p-6">
       <h2 className="text-3xl text-yellow-500 text-center mb-6">Galeria de Exposição de Imagens</h2>
       <div className="flex flex-wrap justify-center items-start gap-4">
         {imageUrls.length > 0 ? (
