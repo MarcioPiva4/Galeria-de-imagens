@@ -19,7 +19,7 @@ const effects = [
   { name: 'Grayscale', className: 'grayscale' },
   { name: 'Blur', className: 'blur-sm' },
   { name: 'Brilho', className: 'brightness-125' },
-  { name: 'Faixa Amarela', className: 'border-4 border-yellow-500' } // Efeito de faixa amarela
+  { name: 'Faixa Amarela', className: 'border-4 border-yellow-500' }
 ];
 
 const Modal: React.FC<ModalProps> = ({

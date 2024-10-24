@@ -7,15 +7,19 @@ const applyOverlayAndEffect = (image: HTMLImageElement, overlayUrl: string, effe
     const ctx = canvas.getContext('2d');
     if (!ctx) throw new Error("Failed to get canvas context");
 
-    // Definindo dimensões do canvas
-    canvas.width = image.width;
-    canvas.height = image.height;
+    // Definindo dimensões do canvas com margem para a borda
+    const borderWidth = 16; // Ajuste a espessura da borda para parecer com "border-4"
+    canvas.width = image.width + borderWidth * 2;
+    canvas.height = image.height + borderWidth * 2;
 
-    // Desenhar a imagem original no canvas
-    ctx.drawImage(image, 0, 0);
+    // Aplicar cor de fundo (borda amarela) ao canvas
+    if (effectClassName === 'border-4 border-yellow-500') {
+      ctx.fillStyle = 'yellow';
+      ctx.fillRect(0, 0, canvas.width, canvas.height); // Preencher o fundo com amarelo
+    }
 
-    // Aplicar efeito, se houver
-    ctx.filter = 'none'; // Resetando o filtro
+    // Aplicar efeito (se houver) antes de desenhar a imagem
+    ctx.filter = 'none';
     if (effectClassName === 'grayscale') {
       ctx.filter = 'grayscale(1)';
     } else if (effectClassName === 'blur-sm') {
@@ -23,9 +27,9 @@ const applyOverlayAndEffect = (image: HTMLImageElement, overlayUrl: string, effe
     } else if (effectClassName === 'brightness-125') {
       ctx.filter = 'brightness(1.25)';
     }
-    
-    // Re-desenhar a imagem com o efeito
-    ctx.drawImage(image, 0, 0);
+
+    // Desenhar a imagem original com bordas ao redor
+    ctx.drawImage(image, borderWidth, borderWidth);
 
     // Desenhar o overlay, se houver
     if (overlayUrl) {
@@ -34,7 +38,7 @@ const applyOverlayAndEffect = (image: HTMLImageElement, overlayUrl: string, effe
       overlayImage.crossOrigin = 'Anonymous'; // Permitir cross-origin
 
       overlayImage.onload = () => {
-        ctx.drawImage(overlayImage, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(overlayImage, borderWidth, borderWidth, image.width, image.height);
         resolve(canvas); // Resolve o canvas após desenhar o overlay
       };
     } else {
@@ -42,6 +46,7 @@ const applyOverlayAndEffect = (image: HTMLImageElement, overlayUrl: string, effe
     }
   });
 };
+
 
 export const uploadImageToFirebase = async (
   file: File,
