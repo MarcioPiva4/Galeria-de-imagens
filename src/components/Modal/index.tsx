@@ -14,12 +14,12 @@ interface ModalProps {
   setSelectedEffect: (effect: string) => void;
 }
 
-const overlays = [
-  { name: 'Nenhum', url: '' },
-  { name: 'Emoji Corações', url: 'https://firebasestorage.googleapis.com/v0/b/livros-15d40.appspot.com/o/filtros%2Fpngtree-lovers-emoticons-background-png-image_2859444-removebg-preview.png?alt=media&token=4282d319-cbe2-4639-85e9-0b24dfd3b9f1' },
-  { name: 'Emoji Feliz', url: 'https://firebasestorage.googleapis.com/v0/b/livros-15d40.appspot.com/o/filtros%2Fworld-smile-day-emojis-removebg-preview.png?alt=media&token=00f63d4f-dfec-4c35-aaee-c155151ecc5f' },
-  { name: 'Taxi', url: 'https://firebasestorage.googleapis.com/v0/b/livros-15d40.appspot.com/o/filtros%2FDALL%C2%B7E%202024-10-20%2022.30.24%20-%20A%20white%20blank%20center%20surrounded%20by%20multiple%20yellow%20taxi%20cabs%20arranged%20as%20a%20border%20around%20the%20image%2C%20creating%20a%20filter-like%20effect.%20The%20taxis%20are%20posit.webp?alt=media&token=d07b7570-5312-425a-b6f2-a2d66b2cf96e' }
-];
+// const overlays = [
+//   { name: 'Nenhum', url: '' },
+//   { name: 'Emoji Corações', url: 'https://firebasestorage.googleapis.com/v0/b/livros-15d40.appspot.com/o/filtros%2Fpngtree-lovers-emoticons-background-png-image_2859444-removebg-preview.png?alt=media&token=4282d319-cbe2-4639-85e9-0b24dfd3b9f1' },
+//   { name: 'Emoji Feliz', url: 'https://firebasestorage.googleapis.com/v0/b/livros-15d40.appspot.com/o/filtros%2Fworld-smile-day-emojis-removebg-preview.png?alt=media&token=00f63d4f-dfec-4c35-aaee-c155151ecc5f' },
+//   { name: 'Taxi', url: 'https://firebasestorage.googleapis.com/v0/b/livros-15d40.appspot.com/o/filtros%2FDALL%C2%B7E%202024-10-20%2022.30.24%20-%20A%20white%20blank%20center%20surrounded%20by%20multiple%20yellow%20taxi%20cabs%20arranged%20as%20a%20border%20around%20the%20image%2C%20creating%20a%20filter-like%20effect.%20The%20taxis%20are%20posit.webp?alt=media&token=d07b7570-5312-425a-b6f2-a2d66b2cf96e' }
+// ];
 
 const effects = [
   { name: 'Nenhum', className: '' },
@@ -91,7 +91,7 @@ const Modal: React.FC<ModalProps> = ({
             ))}
           </div>
 
-          <h3 className="text-sm font-semibold text-white mb-2">Selecione Overlay</h3>
+          {/* <h3 className="text-sm font-semibold text-white mb-2">Selecione Overlay</h3>
           <div className="flex justify-center gap-2 mb-4">
             {overlays.map((overlay) => (
               <button
@@ -102,7 +102,7 @@ const Modal: React.FC<ModalProps> = ({
                 {overlay.name}
               </button>
             ))}
-          </div>
+          </div> */}
 
           <button
             onClick={handleUpload}
