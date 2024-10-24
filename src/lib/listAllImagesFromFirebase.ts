@@ -1,25 +1,19 @@
-// lib/listAllImagesFromFirebase.ts
-import { getStorage, ref, listAll, getDownloadURL } from "firebase/storage";
-import { app } from "./firebase"; // Certifique-se de que está importando a inicialização do Firebase
+// lib/listAllImagesFromFirestore.ts
+import { getFirestore, collection, onSnapshot } from "firebase/firestore";
+import { app } from "./firebase";
 
-export const listAllImagesFromFirebase = async () => {
-  const storage = getStorage(app);
-  const listRef = ref(storage, '/images'); // Atualize para o caminho correto das suas imagens
+export const listenToImageUpdates = (callback: (images: { url: string; description: string }[]) => void) => {
+  const db = getFirestore(app);
+  const imagesCollection = collection(db, "images"); // Nome da coleção no Firestore
 
-  const imageUrls: { url: string; description: string }[] = [];
-
-  try {
-    const res = await listAll(listRef);
-    const promises = res.items.map(async (item) => {
-      const url = await getDownloadURL(item);
-      // Aqui você pode adicionar uma lógica para obter a descrição, se necessário
-      return { url, description: '' }; // Atualize conforme necessário
+  const unsubscribe = onSnapshot(imagesCollection, (snapshot) => {
+    const images: { url: string; description: string }[] = [];
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      images.push({ url: data.url, description: data.description });
     });
+    callback(images); // Atualiza o estado com a nova lista de imagens
+  });
 
-    const urls = await Promise.all(promises);
-    return urls;
-  } catch (error) {
-    console.error("Erro ao listar imagens:", error);
-    throw error; // Propagar o erro
-  }
+  return unsubscribe; // Função para cancelar a escuta
 };
