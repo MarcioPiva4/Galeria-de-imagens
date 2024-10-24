@@ -70,8 +70,8 @@ export default function Home() {
   };
 
   return (
-    <div className="h-auto w-full bg-gray-900 p-6">
-      <h2 className="text-3xl text-white text-center mb-6">Galeria de Exposição de Imagens</h2>
+    <div className="h-full w-full bg-black p-6">
+      <h2 className="text-3xl text-yellow-500 text-center mb-6">Galeria de Exposição de Imagens</h2>
       <div className="flex flex-wrap justify-center items-start gap-4">
         {imageUrls.length > 0 ? (
           imageUrls.map((image, index) => (
@@ -88,12 +88,12 @@ export default function Home() {
                 className="object-cover w-64 h-40 rounded-lg shadow-lg transition-transform duration-300 ease-in-out transform group-hover:scale-105"
               />
               <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <p className="text-white text-sm">Ver Detalhes</p>
+                <p className="text-yellow-500 text-sm">Ver Detalhes</p>
               </div>
             </div>
           ))
         ) : (
-          <div className="text-white text-center w-full">
+          <div className="text-yellow-500 text-center w-full">
           {imageUrls.length === 0 ? "Carregando imagens..." : "Nenhuma imagem disponível"}
         </div>
         )}
@@ -102,7 +102,7 @@ export default function Home() {
       <div className="flex justify-center mt-8">
         <button
           onClick={() => setModal(true)}
-          className="bg-blue-600 text-white rounded-full px-6 py-2 transition-all duration-300 hover:bg-blue-700 text-lg"
+          className="bg-yellow-500 text-black rounded-full px-6 py-2 transition-all duration-300 hover:bg-yellow-600 text-lg"
         >
           Enviar Imagem
         </button>
