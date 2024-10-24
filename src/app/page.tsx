@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Modal from "@/components/Modal";
 import ImageDetail from "@/components/ImageDetail";
-import { listAllImagesFromFirebase } from "@/lib/listAllImagesFromFirebase";
+import { listenToImageUpdates } from "@/lib/listAllImagesFromFirestore"; // Altere para a nova função
 import { uploadImageToFirebase } from "@/lib/uploadImage";
 import Image from "next/image";
 
@@ -20,17 +20,10 @@ export default function Home() {
   const [selectedEffect, setSelectedEffect] = useState<string>('');
 
   useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const urls = await listAllImagesFromFirebase();
-        setImageUrls(urls);
-      } catch (error) {
-        console.error("Erro ao buscar imagens:", error);
-      }
-    };
+    const unsubscribe = listenToImageUpdates(setImageUrls); // Chama a função de escuta
 
-    fetchImages();
-  }, []); // Removido uploadProgress, o fetch só precisa ser chamado uma vez na montagem
+    return () => unsubscribe(); // Cancela a escuta ao desmontar o componente
+  }, []); // Apenas uma vez na montagem
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -49,10 +42,12 @@ export default function Home() {
       try {
         setErrorMessage(null);
   
-        // Envia a imagem para o Firebase com overlay e efeito
+        // Envia a imagem para o Firebase
         const url = await uploadImageToFirebase(selectedFile, selectedOverlay, selectedEffect, setUploadProgress);
   
-        setImageUrls([...imageUrls, { url, description: "" }]); // Adiciona a nova URL da imagem
+        // Aqui, você deve garantir que a URL e descrição sejam salvas no Firestore após o upload
+        // Supondo que você tenha uma função para adicionar a imagem ao Firestore
+        
         resetModalState(); // Reseta os estados do modal
       } catch (error) {
         setErrorMessage("Erro ao enviar a imagem. Por favor, tente novamente.");
